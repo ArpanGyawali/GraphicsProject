@@ -1,16 +1,16 @@
 #pragma once
 #include <vector>
+#include "Vec2.h"
 
 template <typename T>
-class Vec3
+class Vec3 : public Vec2f
 {
 public:
-	T x,y,z;
+	T z;
 	Vec3() = default;
-	Vec3( T x,T y, T z )
+	Vec3(T x, T y, T z)
 		:
-		x( x ),
-		y( y ),
+		Vec2f(x, y),
 		z( z )
 	{}
 	template <typename T3>

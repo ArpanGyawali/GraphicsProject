@@ -8,6 +8,7 @@ class Cube
 {
 private:
 	std::vector<Vec3f> vertices;
+	std::vector<Vec2f> tc;
 public:
 	Cube(float size)
 	{
@@ -22,7 +23,7 @@ public:
 		vertices.emplace_back(side, 0.0f, 0.0f); // 7
 	}
 
-	VertexIndexBuf GetTriangles() const
+	VertexIndexBuf<Vec3f> GetTriangles() const
 	{
 		/*return{				//for wire framed
 			vertices,{

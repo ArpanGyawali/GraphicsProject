@@ -3,11 +3,11 @@
 #define PI 3.1428
 #include "Vec3.h"
 
-template <typename T>
+template <typename floa>
 class Mat4
 {
 public:
-	T elements[4][4];
+	floa elements[4][4];
 	Mat4& operator=(const Mat4& rhs)
 	{
 		memcpy(elements, rhs.elements, sizeof(elements));
@@ -25,7 +25,7 @@ public:
 		return *this;
 	}*/
 
-	Mat4 operator*(T rhs) const
+	Mat4 operator*(floa rhs) const
 	{
 		Mat4 result = *this;
 		return result = result * rhs;
@@ -38,7 +38,7 @@ public:
 		{
 			for (size_t j = 0; j < 4; j++)
 			{
-				T sum = (T)0.0;
+				floa sum = (floa)0.0;
 				for (size_t k = 0; k < 4; k++)
 				{
 					sum += elements[i][k] * rhs.elements[k][j];
@@ -52,56 +52,56 @@ public:
 	constexpr static Mat4 Identity()
 	{
 		return {
-			(T)1.0,(T)0.0,(T)0.0,(T)0.0,
-			(T)0.0,(T)1.0,(T)0.0,(T)0.0,
-			(T)0.0,(T)0.0,(T)1.0,(T)0.0,
-			(T)0.0,(T)0.0,(T)0.0,(T)1.0,
+			(floa)1.0,(floa)0.0,(floa)0.0,(floa)0.0,
+			(floa)0.0,(floa)1.0,(floa)0.0,(floa)0.0,
+			(floa)0.0,(floa)0.0,(floa)1.0,(floa)0.0,
+			(floa)0.0,(floa)0.0,(floa)0.0,(floa)1.0,
 		};
 	}
 
-	constexpr static Mat4 Scaling(T factor)
+	constexpr static Mat4 Scaling(floa factor)
 	{
 		return {
-			factor,(T)0.0,(T)0.0,(T)0.0,
-			(T)0.0,factor,(T)0.0,(T)0.0,
-			(T)0.0,(T)0.0,factor,(T)0.0,
-			(T)0.0,(T)0.0,(T)0.0,(T)1.0,
+			factor,(floa)0.0,(floa)0.0,(floa)0.0,
+			(floa)0.0,factor,(floa)0.0,(floa)0.0,
+			(floa)0.0,(floa)0.0,factor,(floa)0.0,
+			(floa)0.0,(floa)0.0,(floa)0.0,(floa)1.0,
 		};
 	}
 
-	static Mat4 RotationZ(T theta)
+	static Mat4 RotationZ(floa theta)
 	{
-		const T sinTheta = sin(theta);
-		const T cosTheta = cos(theta);	
+		const floa sinTheta = sin(theta);
+		const floa cosTheta = cos(theta);	
 		return {
-			cosTheta, -sinTheta, (T)0.0,(T)0.0,
-			sinTheta, cosTheta, (T)0.0,(T)0.0,
-			(T)0.0,    (T)0.0,   (T)1.0,(T)0.0,
-			(T)0.0,	   (T)0.0,   (T)0.0,(T)1.0,
+			cosTheta, -sinTheta, (floa)0.0,(floa)0.0,
+			sinTheta, cosTheta, (floa)0.0,(floa)0.0,
+			(floa)0.0,    (floa)0.0,   (floa)1.0,(floa)0.0,
+			(floa)0.0,	   (floa)0.0,   (floa)0.0,(floa)1.0,
 		};
 	}
 
-	static Mat4 RotationY(T theta)
+	static Mat4 RotationY(floa theta)
 	{
-		const T sinTheta = sin(theta);
-		const T cosTheta = cos(theta);
+		const floa sinTheta = sin(theta);
+		const floa cosTheta = cos(theta);
 		return {
-			cosTheta, (T)0.0, sinTheta,(T)0.0,
-			(T)0.0,   (T)1.0, (T)0.0,   (T)0.0,
-			-sinTheta, (T)0.0, cosTheta, (T)0.0,
-			(T)0.0,   (T)0.0, (T)0.0,   (T)1.0,
+			cosTheta, (floa)0.0, sinTheta,(floa)0.0,
+			(floa)0.0,   (floa)1.0, (floa)0.0,   (floa)0.0,
+			-sinTheta, (floa)0.0, cosTheta, (floa)0.0,
+			(floa)0.0,   (floa)0.0, (floa)0.0,   (floa)1.0,
 		};
 	}
 
-	static Mat4 RotationX(T theta)
+	static Mat4 RotationX(floa theta)
 	{
-		const T sinTheta = sin(theta);
-		const T cosTheta = cos(theta);
+		const floa sinTheta = sin(theta);
+		const floa cosTheta = cos(theta);
 		return {
-			(T)1.0, (T)0.0,   (T)0.0,  (T)0.0,
-			(T)0.0, cosTheta, -sinTheta,(T)0.0,
-			(T)0.0, sinTheta, cosTheta,(T)0.0,
-			(T)0.0, (T)0.0,   (T)0.0,  (T)1.0,
+			(floa)1.0, (floa)0.0,   (floa)0.0,  (floa)0.0,
+			(floa)0.0, cosTheta, -sinTheta,(floa)0.0,
+			(floa)0.0, sinTheta, cosTheta,(floa)0.0,
+			(floa)0.0, (floa)0.0,   (floa)0.0,  (floa)1.0,
 		};
 	}
 
@@ -111,26 +111,26 @@ public:
 		return Translation(tl.x, tl.y, tl.z);
 	}*/
 
-	constexpr static Mat4 Translation(T tx, T ty, T tz)
+	constexpr static Mat4 Translation(floa tx, floa ty, floa tz)
 	{
 		return {
-			(T)1.0,(T)0.0,(T)0.0,(T)tx,
-			(T)0.0,(T)1.0,(T)0.0,(T)ty,
-			(T)0.0,(T)0.0,(T)1.0,(T)tz,
-			(T)0.0,(T)0.0,(T)0.0,(T)1.0,
+			(floa)1.0,(floa)0.0,(floa)0.0,(floa)tx,
+			(floa)0.0,(floa)1.0,(floa)0.0,(floa)ty,
+			(floa)0.0,(floa)0.0,(floa)1.0,(floa)tz,
+			(floa)0.0,(floa)0.0,(floa)0.0,(floa)1.0,
 		};
 	}
 
-	constexpr static Mat4 PerspectiveFOV(T fov, T ar, T n, T f)
+	constexpr static Mat4 PerspectiveFOV(floa fov, floa ar, floa n, floa f)
 	{
-		const auto fov_rad = fov * (T)PI / (T)180.0;
-		const auto w = (T)1.0f / std::tan(fov_rad / (T)2.0);
+		const auto fov_rad = fov * (floa)PI / (floa)180.0;
+		const auto w = (floa)1.0f / std::tan(fov_rad / (floa)2.0);
 		const auto h = w * ar;
 		return {
-			w,		(T)0.0,	(T)0.0,				(T)0.0,
-			(T)0.0,	h,		(T)0.0,				(T)0.0,
-			(T)0.0,	(T)0.0,	f / (f - n),		(T)1.0,
-			(T)0.0,	(T)0.0,	-n * f / (f - n),	(T)0.0,
+			w,		(floa)0.0,	(floa)0.0,				(floa)0.0,
+			(floa)0.0,	h,		(floa)0.0,				(floa)0.0,
+			(floa)0.0,	(floa)0.0,	f / (f - n),		(floa)1.0,
+			(floa)0.0,	(floa)0.0,	-n * f / (f - n),	(floa)0.0,
 		};
 	}
 

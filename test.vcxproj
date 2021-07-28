@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\learning material\OpenGL\Glew and Glut\freeglut\include;D:\learning material\OpenGL\Glew and Glut\glew-1.11.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\learning material\OpenGL\test\test\include;D:\learning material\OpenGL\Glew and Glut\freeglut\include;D:\learning material\OpenGL\Glew and Glut\glew-1.11.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,6 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\learning material\OpenGL\test\test\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,15 +150,18 @@
     <ClInclude Include="Mat4.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="OBJLoader.h" />
+    <ClInclude Include="Pipeline.h" />
     <ClInclude Include="Projection.h" />
     <ClInclude Include="DrawTriangle.h" />
     <ClInclude Include="Triangle.h" />
+    <ClInclude Include="Vec2.h" />
     <ClInclude Include="Vec3.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexIndexBuf.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="stb.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
