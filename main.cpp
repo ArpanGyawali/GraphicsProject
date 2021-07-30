@@ -7,9 +7,13 @@
 #include "Mat4.h"
 #include "Cube.h"
 #include "ConvertToScreen.h"
-#include "DrawTriangle.h"
-//#include "Light.h"
+//#include "DrawTriangle.h"
+#include "DrawInterpolatedTriangle.h"
+#include "Color.h"
+#include "Light.h"
 #include "Projection.h"
+#include "Vertex.h"
+#include "TextureLoader.h"
 //#include "Model.h"
 
 #define WIDTH 1000
@@ -21,7 +25,8 @@ float offsetZ = 2.0f;
 float pitchX = 0.0f;
 float yawY = 0.0f;
 float rollZ = 0.0f;
-float Ns = 200.0f;
+float lightX = 0.0f;
+float lightY = 0.0f;
 
 
 const Color colors[12] = {
@@ -64,8 +69,9 @@ void drawCube()
     Vec3f Ka = Vec3f(1.0f, 1.0f, 1.0f);
     Vec3f Kd = Vec3f(0.8f, 0.8f, 0.8f);
     Vec3f Ks = Vec3f(0.5f, 0.5f, 0.5f);
-    Vec3f light = Vec3f(50.0f, 150.0f, 80.0f);
-    Vec3f Ia = Vec3f(0.5f, 0.5f, 0.5f);
+    Vec3f light = Vec3f(lightX, lightY, 5.0f);
+    float ns = 5.0f;
+    Vec3f Ia = Vec3f(0.2f, 0.2f, 0.2f);
     Vec3f Il = Vec3f(0.7f, 0.7f, 0.7f);
 
     //auto lines = cube.GetLines();
@@ -79,6 +85,10 @@ void drawCube()
     //Mat4f perspective = Mat4f::PerspectiveFOV(120, WIDTH/HEIGHT, 0.7, -0.5);
     Mat4f composite = translate * rotation;
     //Transform from model space to view space
+    for (auto& n : triangles.normals)
+    {
+        n = rotation * n;
+    }
     for (auto& v : triangles.vertices)
     {
         v = composite * v;
@@ -95,7 +105,7 @@ void drawCube()
         const Vec3f& v1 = triangles.vertices[triangles.indices[i * 3 + 1]];
         const Vec3f& v2 = triangles.vertices[triangles.indices[i * 3 + 2]];
         Vec3f normal = (v2 - v1).cross(v0 - v1);
-        triangles.backFace[i] = Vec3f(0.0f, 0.0f, 1.0f).dot(normal) >= 0.0f;
+        triangles.backFace[i] = view.dot(normal) >= 0.0f;
     }
     
     //draw triangle
@@ -103,14 +113,35 @@ void drawCube()
         end = triangles.indices.size() / 3;
         i < end; i++)
     {
+        Vec3f v01 = triangles.vertices[triangles.indices[i * 3]];
+        Vec3f v02 = triangles.vertices[triangles.indices[i * 3 + 1]];
+        Vec3f v03 = triangles.vertices[triangles.indices[i * 3 + 2]];
+        Vec3f n1 = triangles.normals[triangles.indices[i * 3]];
+        Vec3f n2 = triangles.normals[triangles.indices[i * 3 + 1]];
+        Vec3f n3 = triangles.normals[triangles.indices[i * 3 + 2]];
+        /*Vec3f t1 = triangles.tc[triangles.indices[i * 3]];
+        Vec3f t2 = triangles.tc[triangles.indices[i * 3 + 1]];
+        Vec3f t3 = triangles.tc[triangles.indices[i * 3 + 2]];*/
+        Vec3f vc1 = calculateIntensity(Ka, Kd, Ks, ns, v01, light, view, n1, Ia, Il);
+        Vec3f vc2 = calculateIntensity(Ka, Kd, Ks, ns, v02, light, view, n2, Ia, Il);
+        Vec3f vc3 = calculateIntensity(Ka, Kd, Ks, ns, v03, light, view, n3, Ia, Il);
+        Vec3f face = (vc1 + vc2 + vc3) / 3.0f;
+        Color intensityColor = { face.x, face.y, face.z };
+        Vertex v1(v01, vc1);
+        Vertex v2(v02, vc2);
+        Vertex v3(v03, vc3);
+        /*Vertex v1(v01, t1);
+        Vertex v2(v02, t2);
+        Vertex v3(v03, t3); */
         if (!triangles.backFace[i])
         {
-            ScanLineTriangle(
+            ProcessTriangle(v1, v2, v3);
+            /*ScanLineTriangle(
                 triangles.vertices[triangles.indices[i*3]], 
                 triangles.vertices[triangles.indices[i * 3 + 1]], 
                 triangles.vertices[triangles.indices[i * 3 + 2]], 
-                colors[i] 
-            );
+                intensityColor
+            );*/
         }
         
     }
@@ -178,6 +209,10 @@ void drawCube()
 void keyboardRot(unsigned char key, int x, int y)
 {
     const float dt = 1.0f / 60.0f;
+    if (lightX > 200.0f)
+        lightX = 0.0f;
+    if (lightY > 200.0f)
+        lightY = 0.0f;
     switch (key) {
     case 'q':
         pitchX += delta * dt;
@@ -205,9 +240,18 @@ void keyboardRot(unsigned char key, int x, int y)
         offsetZ -= 3.0f * dt;
         //s -= 1.0f;
         break;
+    case 't':
+        lightX += 5.0f;
+        //s += 1.0f;
+        break;
+    case 'g':
+        lightY += 5.0f;
+        //s -= 1.0f;
+        break;
     case 8:     //Backspace key
         pitchX = yawY = rollZ = 0.0f;
-        offsetZ = 30.0f;
+        lightX = lightY = 0.0f;
+        offsetZ = 2.0f;
         break;
     case 27:    //ESC key
         exit(0);
@@ -257,6 +301,8 @@ void display()
 }
 
 int main(int argc, char* argv[]) {
+    Vec3f texture = GetPixel(99, 99);
+    std::cout << texture.x << texture.y << texture.z << getWidth() << getHeight() << std::endl;
 
     //  Initialize GLUT and process user parameters
     glutInit(&argc, argv);

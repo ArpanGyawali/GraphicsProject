@@ -19,17 +19,25 @@ public:
 	{
 		return{ (T3)x,(T3)y,(T3)z };
 	}
-	Vec3 Normalize(Vec3& p)
+	/*Vec3& Normalize(Vec3& p)
 	{
 		T mag = p.x * p.x + p.y * p.y + p.z * p.z;
 		mag = pow(mag, 0.5);
 		p = p.operator/(mag);
 		return p;
-	}
+	}*/
 	/*Vec4	operator-() const
 	{
 		return Vec4( -x,-y );
 	}*/
+	Vec3 max()
+	{
+		return Vec3(
+			std::max(0.0f, x),
+			std::max(0.0f, y),
+			std::max(0.0f, z)
+		);
+	}
 	Vec3 cross(const Vec3& rhs) const
 	{
 		return Vec3(

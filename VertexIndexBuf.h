@@ -5,7 +5,7 @@
 
 struct VertexIndexBuf
 {
-	VertexIndexBuf(std::vector<Vec3f> verts, std::vector<Vec3f> norms, std::vector<size_t> ind)
+	VertexIndexBuf(std::vector<Vec3f> verts, std::vector<Vec3f> norms, std::vector<Vec3f> tc, std::vector<size_t> ind)
 		:
 		vertices(std::move(verts)),
 		normals(std::move(norms)),
@@ -14,6 +14,7 @@ struct VertexIndexBuf
 		backFace.resize(indices.size() / 3);
 	}
 	std::vector<Vec3f> vertices;
+	std::vector<Vec3f> tc;
 	std::vector<Vec3f> normals;
 	std::vector<size_t> indices;
 	std::vector<bool> backFace;

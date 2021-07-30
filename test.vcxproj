@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\learning material\OpenGL\Glew and Glut\freeglut\include;D:\learning material\OpenGL\Glew and Glut\glew-1.11.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\learning material\OpenGL\test\include;D:\learning material\OpenGL\Glew and Glut\freeglut\include;D:\learning material\OpenGL\Glew and Glut\glew-1.11.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,6 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\learning material\OpenGL\test\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,6 +146,7 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="ConvertToScreen.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="DrawInterpolatedTriangle.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Mat4.h" />
@@ -152,6 +154,7 @@
     <ClInclude Include="OBJLoader.h" />
     <ClInclude Include="Projection.h" />
     <ClInclude Include="DrawTriangle.h" />
+    <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="Vec3.h" />
     <ClInclude Include="Vertex.h" />
