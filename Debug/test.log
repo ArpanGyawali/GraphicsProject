@@ -3,9 +3,11 @@ D:\learning material\OpenGL\test\test\Line.h(41,37): warning C4244: 'argument': 
 D:\learning material\OpenGL\test\test\Line.h(41,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 D:\learning material\OpenGL\test\test\Line.h(60,37): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 D:\learning material\OpenGL\test\test\Line.h(60,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-D:\learning material\OpenGL\test\test\main.cpp(17,34): warning C4305: 'initializing': truncation from 'double' to 'const float'
-D:\learning material\OpenGL\test\test\main.cpp(44,36): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
-D:\learning material\OpenGL\test\test\main.cpp(56,18): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\learning material\OpenGL\test\test\Cube.h(17,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\learning material\OpenGL\test\test\Cube.h(17,19): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
+D:\learning material\OpenGL\test\test\main.cpp(18,34): warning C4305: 'initializing': truncation from 'double' to 'const float'
+D:\learning material\OpenGL\test\test\main.cpp(48,36): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
+D:\learning material\OpenGL\test\test\main.cpp(61,18): warning C4305: 'argument': truncation from 'double' to 'float'
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\xmemory(714,68): warning C4244: 'argument': conversion from '_Ty' to 'T', possible loss of data
           with
           [
@@ -34,5 +36,5 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.2
           [
               _Ty=int
           ]
-D:\learning material\OpenGL\test\test\Cube.h(18): message : see reference to function template instantiation 'void std::vector<Vec3f,std::allocator<Vec3f>>::emplace_back<int,const float&,const float&>(int &&,const float &,const float &)' being compiled
+D:\learning material\OpenGL\test\test\Cube.h(24): message : see reference to function template instantiation 'void std::vector<Vec3f,std::allocator<Vec3f>>::emplace_back<int,const float&,const float&>(int &&,const float &,const float &)' being compiled
   test.vcxproj -> D:\learning material\OpenGL\test\Debug\test.exe

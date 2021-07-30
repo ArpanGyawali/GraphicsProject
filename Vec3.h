@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <GL/glut.h>
 
 template <typename T>
 class Vec3
@@ -18,7 +19,7 @@ public:
 	{
 		return{ (T3)x,(T3)y,(T3)z };
 	}
-	Vec3& Normalize(Vec3 &p)
+	Vec3 Normalize(Vec3& p)
 	{
 		T mag = p.x * p.x + p.y * p.y + p.z * p.z;
 		mag = pow(mag, 0.5);
@@ -41,6 +42,16 @@ public:
 	{
 		return x * rhs.x + y * rhs.y + z * rhs.z;
 	}
+	/*Vec3& max()
+	{
+		if (x < 0)
+			x = 0;
+		if (y < 0)
+			y = 0;
+		if (z < 0)
+			z = 0;
+		return *this;
+	}*/
 	Vec3& operator=( const Vec3 &rhs )
 	{
 		x = rhs.x;
@@ -81,6 +92,19 @@ public:
 	Vec3 operator*( const T &rhs ) const			//multiply const with vector
 	{
 		return Vec3( *this ) *= rhs;
+	}
+	Vec3& operator*=(const Vec3& rhs)		//for light color
+	{
+		{
+			x *= rhs.x;
+			y *= rhs.y;
+			z *= rhs.z;
+			return *this;
+		}
+	}
+	Vec3 operator*(const Vec3& rhs) const
+	{
+		return Vec3(*this) *= rhs;
 	}
 	Vec3& operator/=( const T &rhs )
 	{

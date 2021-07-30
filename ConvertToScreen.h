@@ -3,6 +3,9 @@
 #include <GL/glut.h>
 #include "Vec3.h"
 
+#define WIDTH 1000
+#define HEIGHT 1000
+
 class ConvertToScreen
 {										//normalize -1 1            //screen resolution
 private:
@@ -11,8 +14,8 @@ private:
 public:
 	ConvertToScreen()
 		:
-		xFactor(float(GLUT_WINDOW_WIDTH )/2.0f),
-		yFactor(float(GLUT_WINDOW_HEIGHT) /2.0f)
+		xFactor(float(WIDTH)/2.0f),
+		yFactor(float(HEIGHT)/2.0f)
 	{}
 	Vec3f& Transform(Vec3f& normalized) const
 	{

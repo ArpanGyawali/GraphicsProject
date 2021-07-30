@@ -8,6 +8,7 @@
 #include "Cube.h"
 #include "ConvertToScreen.h"
 #include "DrawTriangle.h"
+//#include "Light.h"
 #include "Projection.h"
 //#include "Model.h"
 
@@ -15,11 +16,14 @@
 #define HEIGHT 1000
 
 static constexpr float delta = PI;
-float s = 30.0f;
+//float s = 30.0f;
 float offsetZ = 2.0f;
 float pitchX = 0.0f;
 float yawY = 0.0f;
 float rollZ = 0.0f;
+float Ns = 200.0f;
+
+
 const Color colors[12] = {
         WHITE,
         WHITE,
@@ -50,28 +54,37 @@ void myinit(void)
     gluOrtho2D(-WIDTH/2, WIDTH/2, -HEIGHT/2, HEIGHT/2);
 }
 
+
 void drawCube()
 {
     ConvertToScreen screen;
-    Cube cube(0.1);
-    float zvp = 5.0f;
-    Vec3f reference = { 0.0f, 0.0f, -5.0f };
+    Cube cube(0.4);
+    Vec3f view = Vec3f(0.0f, 0.0f, 1.0f);
+    Vec3f reference = Vec3f(0.0f, 0.0f, -1.0f);
+    Vec3f Ka = Vec3f(1.0f, 1.0f, 1.0f);
+    Vec3f Kd = Vec3f(0.8f, 0.8f, 0.8f);
+    Vec3f Ks = Vec3f(0.5f, 0.5f, 0.5f);
+    Vec3f light = Vec3f(50.0f, 150.0f, 80.0f);
+    Vec3f Ia = Vec3f(0.5f, 0.5f, 0.5f);
+    Vec3f Il = Vec3f(0.7f, 0.7f, 0.7f);
+
     //auto lines = cube.GetLines();
     auto triangles = cube.GetTriangles();
-    Mat4f scale = Mat4f::Scaling(s);
+    //Mat4f scale = Mat4f::Scaling(s);
     Mat4f rotation =
         Mat4f::RotationX(pitchX) *
         Mat4f::RotationY(yawY) *
         Mat4f::RotationZ(rollZ);
+    Mat4f translate = Mat4f::Translation(0.0f, 0.0f, offsetZ);
     //Mat4f perspective = Mat4f::PerspectiveFOV(120, WIDTH/HEIGHT, 0.7, -0.5);
-    Mat4f composite = scale * rotation;
+    Mat4f composite = translate * rotation;
     //Transform from model space to view space
     for (auto& v : triangles.vertices)
     {
         v = composite * v;
         //v = v + Vec3f(0.0f, 0.0f, offsetZ);
         screen.Transform(v);
-        PerspectiveView(zvp, reference, v);
+        PerspectiveView(view.z, reference, v);
     }                                                                                       
     //backface test                                                                    
     for (size_t i = 0,
@@ -90,10 +103,6 @@ void drawCube()
         end = triangles.indices.size() / 3;
         i < end; i++)
     {
-        /*Vec3f point1(triangles.vertices[*i].x, lines.vertices[*i].y, 0);
-        Vec3f point2(lines.vertices[*(i+1)].x, lines.vertices[*(i + 1)].y, 0);
-        Bressenham(point1.x, point1.y, point2.x, point2.y, WHITE);*/
-
         if (!triangles.backFace[i])
         {
             ScanLineTriangle(
@@ -115,18 +124,19 @@ void drawCube()
 //    Vec3f reference = { 0.0f, 0.0f, -5.0f };
 //    //auto lines = cube.GetLines();
 //    auto triangles = model.GetTriangle();
-//    Mat4f scale = Mat4f::Scaling(s);
+//    //Mat4f scale = Mat4f::Scaling(10.0f);
 //    Mat4f rotation =
 //        Mat4f::RotationX(pitchX) *
 //        Mat4f::RotationY(yawY) *
 //        Mat4f::RotationZ(rollZ);
+//    Mat4f translate = Mat4f::Translation(0.0f, 0.0f, offsetZ);
 //    //Mat4f perspective = Mat4f::PerspectiveFOV(120, WIDTH/HEIGHT, 0.7, -0.5);
-//    Mat4f composite = rotation * scale;
+//    Mat4f composite = translate * rotation;
 //    //Transform from model space to view space
 //    for (auto& v : triangles.vertices)
 //    {
-//        v = composite * v;
 //        v = v.Normalize(v);
+//        v = composite * v;
 //        //v = v + Vec3f(0.0f, 0.0f, offsetZ);
 //        screen.Transform(v);
 //        
@@ -188,12 +198,12 @@ void keyboardRot(unsigned char key, int x, int y)
         rollZ -= delta * dt;
         break;
     case 'r':
-        offsetZ += 2.0f * dt;
-        s += 1.0f;
+        offsetZ += 3.0f * dt;
+        //s += 1.0f;
         break;
     case 'f':
-        offsetZ -= 2.0f * dt;
-        s -= 1.0f;
+        offsetZ -= 3.0f * dt;
+        //s -= 1.0f;
         break;
     case 8:     //Backspace key
         pitchX = yawY = rollZ = 0.0f;

@@ -145,6 +145,7 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="ConvertToScreen.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Mat4.h" />
     <ClInclude Include="Model.h" />

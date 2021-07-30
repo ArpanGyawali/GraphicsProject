@@ -16,7 +16,7 @@ public:
 	Model()
 	{
 		std::vector<Vertex> model;
-		model = loadOBJ("OBJFiles/Everest.obj");
+		model = loadOBJ("OBJFiles/Statue_de_la_libert__Model_1.obj");
 		for (size_t i = 0;
 			i < model.size(); i++)
 		{
