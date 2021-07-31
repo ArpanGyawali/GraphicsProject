@@ -162,16 +162,21 @@ void DrawFlatTriangle(const Vertex& it0,
 		for (int x = xStart; x < xEnd; x++, iLine += diLine)
 		{
 			// invoke pixel shader and write resulting color value
-			Color color = { iLine.color.x, iLine.color.y, iLine.color.z };
-			putPixel(x, y, color);
-			/*float tex_width = getWidth();
-			float tex_height = getHeight();
-			int tex_xclamp = tex_width - 1;
-			int tex_yclamp = tex_height - 1;
-			Vec3f colorVec = GetPixel(int(std::min(iLine.tc.x * tex_width + 0.5f, tex_xclamp)), int(std::min(iLine.tc.y * tex_height + 0.5f, tex_yclamp)));
+			/*Color color = { iLine.color.x, iLine.color.y, iLine.color.z };
+			putPixel(x, y, color);*/
+			/*float tex_width = float(getWidth());
+			float tex_height = float(getHeight());
+			float tex_xclamp = tex_width - 1.0f;
+			float tex_yclamp = tex_height - 1.0f;*/
+			//std::cout << "tw" << tex_width << "  th" << tex_height << "  txc" << tex_xclamp << "  tyc" << tex_yclamp << std::endl;
+			Vec3f colorVec = GetPixel(int(std::min(iLine.tc.x * 512.0f, 511.0f)), int(std::min(iLine.tc.y * 512.0f, 511.0f)));
+			//Vec3f colorVec = GetPixel((unsigned int)99, (unsigned int)99);
+			//std::cout << colorVec.x << colorVec.x << colorVec.x << std::endl;
+			
+			//Vec3f texture = GetPixel(99, 99);
+			//Vec3f colorVec = Vec3f((unsigned int)std::min(iLine.tc.x * 100.0f + 0.5f, 99.0f), (unsigned int)std::min(iLine.tc.y * 100.0f + 0.5f, 99.0f),0.0f);
 			Color color = { colorVec.x, colorVec.y, colorVec.z };
-			putPixel(x, y, color); */
-
+			putPixel(x, y, color); 
 		}
 	}
 }

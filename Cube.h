@@ -9,18 +9,18 @@ class Cube
 {
 private:
 	std::vector<Vec3f> vertices;
-	std::vector<Vec3f> normals;
 	std::vector<Vec3f> tc;
+	std::vector<Vec3f> normals;
 public:
 	Cube(float size, float texdim = 1.0f)
 	{
 		const float side = size / 2.0f;
 		const float val = 1 / sqrt(3);
 		vertices.emplace_back(0.0f,0.0f,side); // 0	
-		tc.emplace_back(0.0f, texdim, 0.0f);
+		tc.emplace_back(texdim, texdim, 0.0f);
 		normals.emplace_back(-val, -val, val);
 		vertices.emplace_back(side, 0.0f, side); // 1
-		tc.emplace_back(texdim, texdim, 0.0f);
+		tc.emplace_back(0.0f, texdim, 0.0f);
 		normals.emplace_back(val, -val, val);
 		vertices.emplace_back(side, side, side); // 2
 		tc.emplace_back(0.0f, 0.0f, 0.0f);
@@ -29,16 +29,16 @@ public:
 		tc.emplace_back(texdim, 0.0f, 0.0f);
 		normals.emplace_back(-val, val, val);
 		vertices.emplace_back(0.0f, 0.0f, 0.0f); // 4
-		tc.emplace_back(texdim, texdim, 0.0f);
+		tc.emplace_back(0.0f, texdim, 0.0f);
 		normals.emplace_back(-val, -val, -val);
 		vertices.emplace_back(0.0f, side, 0.0f); // 5
-		tc.emplace_back(0.0f, texdim, 0.0f);
+		tc.emplace_back(0.0f, 0.0f, 0.0f);
 		normals.emplace_back(-val, val, -val);
 		vertices.emplace_back(side, side, 0.0f); // 6
 		tc.emplace_back(texdim, 0.0f, 0.0f);
 		normals.emplace_back(val, val, -val);
 		vertices.emplace_back(side, 0.0f, 0.0f); // 7
-		tc.emplace_back(0.0f, 0.0f, 0.0f);
+		tc.emplace_back(texdim, texdim, 0.0f);
 		normals.emplace_back(val, -val, -val);
 	}
 
@@ -50,8 +50,14 @@ public:
 				0,4,  1,5,  3,7,  2,6,
 				4,5,  5,7,  7,6,  6,4 }
 		};*/
+		/*std::vector<Vertex> tverts;
+		tverts.reserve(vertices.size());
+		for (size_t i = 0; i < vertices.size(); i++)
+		{
+			tverts.emplace_back(vertices[i], tc[i]);
+		}*/
 		return{					//for rasterized solid
-			vertices, tc, normals, {
+			vertices,tc,normals, {
 			0,1,2, 2,3,0,			//front
 			1,7,6, 6,2,1,			//right
 			2,6,5, 5,3,2,			//top

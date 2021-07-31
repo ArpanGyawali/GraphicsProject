@@ -14,8 +14,8 @@ private:
 public:
 	ConvertToScreen()
 		:
-		xFactor(float(WIDTH)/2.0f),
-		yFactor(float(HEIGHT)/2.0f)
+		xFactor(float(WIDTH)/8),
+		yFactor(float(WIDTH)/8)
 	{}
 	Vec3f& Transform(Vec3f& normalized) const
 	{

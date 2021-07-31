@@ -5,9 +5,10 @@
 
 struct VertexIndexBuf
 {
-	VertexIndexBuf(std::vector<Vec3f> verts, std::vector<Vec3f> norms, std::vector<Vec3f> tc, std::vector<size_t> ind)
+	VertexIndexBuf(std::vector<Vec3f> verts, std::vector<Vec3f> textcord, std::vector<Vec3f> norms, std::vector<size_t> ind)
 		:
 		vertices(std::move(verts)),
+		tc(std::move(textcord)),
 		normals(std::move(norms)),
 		indices(std::move(ind))
 	{

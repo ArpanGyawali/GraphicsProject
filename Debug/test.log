@@ -6,6 +6,7 @@ D:\learning material\OpenGL\test\test\Line.h(60,27): warning C4244: 'argument': 
 D:\learning material\OpenGL\test\test\Cube.h(18,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 D:\learning material\OpenGL\test\test\Cube.h(18,19): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
 D:\learning material\OpenGL\test\test\TextureLoader.h(14,14): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\learning material\OpenGL\test\test\Light.h(11,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 D:\learning material\OpenGL\test\test\main.cpp(22,34): warning C4305: 'initializing': truncation from 'double' to 'const float'
 D:\learning material\OpenGL\test\test\main.cpp(53,36): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
 D:\learning material\OpenGL\test\test\main.cpp(66,18): warning C4305: 'argument': truncation from 'double' to 'float'
@@ -40,4 +41,5 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.2
 D:\learning material\OpenGL\test\test\Cube.h(28): message : see reference to function template instantiation 'void std::vector<Vec3f,std::allocator<Vec3f>>::emplace_back<int,const float&,const float&>(int &&,const float &,const float &)' being compiled
 D:\learning material\OpenGL\test\test\TextureLoader.h(16): warning C4172: returning address of local variable or temporary: normalized
 D:\learning material\OpenGL\test\test\TextureLoader.h(59): warning C4172: returning address of local variable or temporary: nomalizedColor
+D:\learning material\OpenGL\test\test\Light.h(13): warning C4172: returning address of local variable or temporary: normalized
   test.vcxproj -> D:\learning material\OpenGL\test\Debug\test.exe

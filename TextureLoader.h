@@ -37,7 +37,7 @@ bool load_image(std::vector<unsigned char>& image, const std::string& filename, 
 int width, height;
 Vec3f& GetPixel(int x, int y)
 {
-    std::string filename = "OBJFiles/eye.png";
+    std::string filename = "OBJFiles/brick.png";
 
     //int width, height;
     std::vector<unsigned char> image;

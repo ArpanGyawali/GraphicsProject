@@ -13,7 +13,7 @@
 #include "Light.h"
 #include "Projection.h"
 #include "Vertex.h"
-#include "TextureLoader.h"
+//#include "TextureLoader.h"
 //#include "Model.h"
 
 #define WIDTH 1000
@@ -85,17 +85,17 @@ void drawCube()
     //Mat4f perspective = Mat4f::PerspectiveFOV(120, WIDTH/HEIGHT, 0.7, -0.5);
     Mat4f composite = translate * rotation;
     //Transform from model space to view space
-    for (auto& n : triangles.normals)
+    /*for (auto& n : triangles.normals)
     {
         n = rotation * n;
-    }
+    }*/
     for (auto& v : triangles.vertices)
     {
-        v = composite * v;
+        v = rotation * v;
         //v = v + Vec3f(0.0f, 0.0f, offsetZ);
-        screen.Transform(v);
         PerspectiveView(view.z, reference, v);
-    }                                                                                       
+        screen.Transform(v);
+    }         
     //backface test                                                                    
     for (size_t i = 0,
         end = triangles.indices.size() / 3;
@@ -116,23 +116,23 @@ void drawCube()
         Vec3f v01 = triangles.vertices[triangles.indices[i * 3]];
         Vec3f v02 = triangles.vertices[triangles.indices[i * 3 + 1]];
         Vec3f v03 = triangles.vertices[triangles.indices[i * 3 + 2]];
-        Vec3f n1 = triangles.normals[triangles.indices[i * 3]];
+       /* Vec3f n1 = triangles.normals[triangles.indices[i * 3]];
         Vec3f n2 = triangles.normals[triangles.indices[i * 3 + 1]];
-        Vec3f n3 = triangles.normals[triangles.indices[i * 3 + 2]];
-        /*Vec3f t1 = triangles.tc[triangles.indices[i * 3]];
+        Vec3f n3 = triangles.normals[triangles.indices[i * 3 + 2]];*/
+        Vec3f t1 = triangles.tc[triangles.indices[i * 3]];
         Vec3f t2 = triangles.tc[triangles.indices[i * 3 + 1]];
-        Vec3f t3 = triangles.tc[triangles.indices[i * 3 + 2]];*/
-        Vec3f vc1 = calculateIntensity(Ka, Kd, Ks, ns, v01, light, view, n1, Ia, Il);
+        Vec3f t3 = triangles.tc[triangles.indices[i * 3 + 2]];
+        /*Vec3f vc1 = calculateIntensity(Ka, Kd, Ks, ns, v01, light, view, n1, Ia, Il);
         Vec3f vc2 = calculateIntensity(Ka, Kd, Ks, ns, v02, light, view, n2, Ia, Il);
         Vec3f vc3 = calculateIntensity(Ka, Kd, Ks, ns, v03, light, view, n3, Ia, Il);
         Vec3f face = (vc1 + vc2 + vc3) / 3.0f;
-        Color intensityColor = { face.x, face.y, face.z };
-        Vertex v1(v01, vc1);
+        Color intensityColor = { face.x, face.y, face.z };*/
+        /*Vertex v1(v01, vc1);
         Vertex v2(v02, vc2);
-        Vertex v3(v03, vc3);
-        /*Vertex v1(v01, t1);
+        Vertex v3(v03, vc3);*/
+        Vertex v1(v01, t1);
         Vertex v2(v02, t2);
-        Vertex v3(v03, t3); */
+        Vertex v3(v03, t3); 
         if (!triangles.backFace[i])
         {
             ProcessTriangle(v1, v2, v3);
@@ -301,8 +301,8 @@ void display()
 }
 
 int main(int argc, char* argv[]) {
-    Vec3f texture = GetPixel(99, 99);
-    std::cout << texture.x << texture.y << texture.z << getWidth() << getHeight() << std::endl;
+    /*Vec3f texture = GetPixel(99, 99);
+    std::cout << texture.x << texture.y << texture.z << getWidth() << getHeight() << std::endl;*/
 
     //  Initialize GLUT and process user parameters
     glutInit(&argc, argv);

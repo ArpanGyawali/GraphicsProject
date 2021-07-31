@@ -11,7 +11,7 @@ void DrawFlatTopTriangle(const Vec3f& v0, const Vec3f& v1, const Vec3f& v2, Colo
 	// calulcate slopes in screen space
 	float m0 = (v2.x - v0.x) / (v2.y - v0.y);
 	float m1 = (v2.x - v1.x) / (v2.y - v1.y);
-
+	
 	// calculate start and end scanlines
 	const int yStart = (int)ceil(v0.y - 0.5f);
 	const int yEnd = (int)ceil(v2.y - 0.5f); // the scanline AFTER the last line drawn
