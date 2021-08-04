@@ -30,7 +30,7 @@ float lightX = 0.0f;
 float lightY = 0.0f;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-//Camera camera(Vec3f(0.0f, 0.0f, 1.0f));
+Camera camera(Vec3f(0.0f, 0.0f, 1.0f));
 
 void myinit(void)
 {
@@ -141,7 +141,7 @@ void drawModel()
 {
     ConvertToScreen screen;
     Model model;
-    Vec3f view = Vec3f(0.0f, 0.0f, 1.0f);
+    //Vec3f view = Vec3f(0.0f, 0.0f, 1.0f);
     Vec3f reference = Vec3f(0.0f, 0.0f, 0.0f);
     Vec3f Ka = Vec3f(1.0f, 1.0f, 1.0f);
     Vec3f Kd = Vec3f(0.8f, 0.8f, 0.8f);
@@ -158,24 +158,22 @@ void drawModel()
         Mat4f::RotationY(yawY) *
         Mat4f::RotationZ(rollZ);
     Mat4f translate = Mat4f::Translation(0.0f, 0.0f, offsetZ);
-    //Mat4f view = camera.GetViewMatrix();
+    Mat4f view = camera.GetViewMatrix();
     //Mat4f perspective = Mat4f::PerspectiveFOV(120, WIDTH/HEIGHT, 0.7, -0.5);
     Mat4f composite = translate * rotation;
-    for (auto& n : triangles.normals)
+    /*for (auto& n : triangles.normals)
         {
             n = rotation * n;
-        }
+        }*/
     //Transform from model space to view space
     for (auto& v : triangles.vertices)
     {
         v = composite * v;          //modeling transformation(MC -> WC)
         //Viewing Transfrmaion(WC -> VC)
-        //v = view * v;
+        v = view * v;
         /*Mat4f perspective = PerspectiveFOV((camera.Zoom * (PI / 180)), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
         v = perspective * v;*/
-
-        PerspectiveView(view.z, reference, v);
-        //PerspectiveView(camera.CameraPos.z, reference, v);  //projection transformation(VC -> PC)
+        PerspectiveView(camera.CameraPos.z, reference, v);  //projection transformation(VC -> PC)
         auto norm = Normalized(v);              //PC -> NDC
         v = screen.Transform(norm);             //Workstation transformation(NDC -> DC)
     }
@@ -203,9 +201,9 @@ void drawModel()
         Vec3f n1 = triangles.normals[i];
         Vec3f n2 = triangles.normals[i + 1];
         Vec3f n3 = triangles.normals[i + 2];
-        Vec3f vc1 = calculateIntensity(Ka, Kd, Ks, ns, v01, light, view, n1, Ia, Il);
-        Vec3f vc2 = calculateIntensity(Ka, Kd, Ks, ns, v02, light, view, n2, Ia, Il);
-        Vec3f vc3 = calculateIntensity(Ka, Kd, Ks, ns, v03, light, view, n3, Ia, Il);
+        Vec3f vc1 = calculateIntensity(Ka, Kd, Ks, ns, v01, light, camera.CameraPos, n1, Ia, Il);
+        Vec3f vc2 = calculateIntensity(Ka, Kd, Ks, ns, v02, light, camera.CameraPos, n2, Ia, Il);
+        Vec3f vc3 = calculateIntensity(Ka, Kd, Ks, ns, v03, light, camera.CameraPos, n3, Ia, Il);
         Vertex v1(v01, n1, vc1);
         Vertex v2(v02, n2, vc2);
         Vertex v3(v03, n3, vc3);
@@ -215,76 +213,39 @@ void drawModel()
     }
 }
 
-void keyboard(unsigned char key, int x, int y)
-{
-    const float dt = 1.0f / 60.0f;
-    if (lightX > 200.0f)
-        lightX = 0.0f;
-    if (lightY > 200.0f)
-        lightY = 0.0f;
-    switch (key) {
-    case 'q':
-        pitchX += delta * dt;
-        break;
-    case 'w':
-        yawY += delta * dt;
-        break;
-    case 'e':
-        rollZ += delta * dt;
-        break;
-    case 'a':
-        pitchX -= delta * dt;
-        break;
-    case 's':
-        yawY -= delta * dt;
-        break;
-    case 'd':
-        rollZ -= delta * dt;
-        break;
-    case 'r':
-        offsetZ += 3.0f * dt;
-        //s += 1.0f;
-        break;
-    case 'f':
-        offsetZ -= 3.0f * dt;
-        //s -= 1.0f;
-        break;
-    case 't':
-        lightX += 5.0f;
-        //s += 1.0f;
-        break;
-    case 'g':
-        lightY += 5.0f;
-        //s -= 1.0f;
-        break;
-    case 8:     //Backspace key
-        pitchX = yawY = rollZ = 0.0f;
-        lightX = lightY = 0.0f;
-        offsetZ = 2.0f;
-        break;
-    case 27:    //ESC key
-        exit(0);
-        break;
-    default:
-        break;
-    }
-    glutPostRedisplay();  //Window redraw
-}
-
 //void keyboard(unsigned char key, int x, int y)
 //{
+//    const float dt = 1.0f / 60.0f;
+//    if (lightX > 200.0f)
+//        lightX = 0.0f;
+//    if (lightY > 200.0f)
+//        lightY = 0.0f;
 //    switch (key) {
-//    case 'w':
-//        camera.ProcessKeyboard(FORWARD, deltaTime);
+//    case 'q':
+//        pitchX += delta * dt;
 //        break;
-//    case 's':
-//        camera.ProcessKeyboard(BACKWARD, deltaTime);
+//    case 'w':
+//        yawY += delta * dt;
+//        break;
+//    case 'e':
+//        rollZ += delta * dt;
 //        break;
 //    case 'a':
-//        camera.ProcessKeyboard(LEFT, deltaTime);
+//        pitchX -= delta * dt;
+//        break;
+//    case 's':
+//        yawY -= delta * dt;
 //        break;
 //    case 'd':
-//        camera.ProcessKeyboard(RIGHT, deltaTime);
+//        rollZ -= delta * dt;
+//        break;
+//    case 'r':
+//        offsetZ += 3.0f * dt;
+//        //s += 1.0f;
+//        break;
+//    case 'f':
+//        offsetZ -= 3.0f * dt;
+//        //s -= 1.0f;
 //        break;
 //    case 't':
 //        lightX += 5.0f;
@@ -294,6 +255,11 @@ void keyboard(unsigned char key, int x, int y)
 //        lightY += 5.0f;
 //        //s -= 1.0f;
 //        break;
+//    case 8:     //Backspace key
+//        pitchX = yawY = rollZ = 0.0f;
+//        lightX = lightY = 0.0f;
+//        offsetZ = 2.0f;
+//        break;
 //    case 27:    //ESC key
 //        exit(0);
 //        break;
@@ -302,6 +268,38 @@ void keyboard(unsigned char key, int x, int y)
 //    }
 //    glutPostRedisplay();  //Window redraw
 //}
+
+void keyboard(unsigned char key, int x, int y)
+{
+    switch (key) {
+    case 'w':
+        camera.ProcessKeyboard(FORWARD, deltaTime);
+        break;
+    case 's':
+        camera.ProcessKeyboard(BACKWARD, deltaTime);
+        break;
+    case 'a':
+        camera.ProcessKeyboard(LEFT, deltaTime);
+        break;
+    case 'd':
+        camera.ProcessKeyboard(RIGHT, deltaTime);
+        break;
+    case 't':
+        lightX += 5.0f;
+        //s += 1.0f;
+        break;
+    case 'g':
+        lightY += 5.0f;
+        //s -= 1.0f;
+        break;
+    case 27:    //ESC key
+        exit(0);
+        break;
+    default:
+        break;
+    }
+    glutPostRedisplay();  //Window redraw
+}
 
 void drawLine()
 {
