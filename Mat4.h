@@ -121,6 +121,26 @@ public:
 		};
 	}
 
+	constexpr static Mat4 RotView(Vec3f right, Vec3f up, Vec3f dir)
+	{
+		return {
+			right.x,right.y,right.z,0.0f,
+			up.x,up.y,up.z,0.0f,
+			dir.x,dir.y,dir.z,0.0f,
+			0.0f,0.0f,0.0f,1.0f,
+		};
+	}
+
+	constexpr static Mat4 TranslateView(Vec3f pos)
+	{
+		return {
+			1.0f,0.0f,0.0f,-pos.x,
+			0.0f,1.0f,0.0f,-pos.y,
+			0.0f,0.0f,1.0f,-pos.z,
+			0.0f,0.0f,0.0f,1.0f,
+		};
+	}
+
 	constexpr static Mat4 PerspectiveFOV(T fov, T ar, T n, T f)
 	{
 		const auto fov_rad = fov * (T)PI / (T)180.0;

@@ -116,13 +116,15 @@ static std::vector<Vertex> loadOBJ(const char* file_name)
 	//Load in all indices
 	for (size_t i = 0; i < vertices.size(); ++i)
 	{
-		vertices[i].position = vertex_positions[vertex_position_indicies[i] - 1];
+		vertices[i].pos = vertex_positions[vertex_position_indicies[i] - 1];
 		//vertices[i].texcoord = vertex_texcoords[vertex_texcoord_indicies[i] - 1];
 		vertices[i].normal = vertex_normals[vertex_normal_indicies[i] - 1];
 		//vertices[i].color(WHITE);
 	}
 
 	//DEBUG
+	std::cout << "Nr of vertices: " << vertices.size() << "\n";
+	std::cout << "vertices: " << vertices[49469].pos.x << "\n";
 	std::cout << "Nr of vertices: " << vertices.size() << "\n";
 
 	//Loaded success

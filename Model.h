@@ -16,11 +16,12 @@ public:
 	Model()
 	{
 		std::vector<Vertex> model;
-		model = loadOBJ("OBJFiles/Statue_de_la_libert__Model_1.obj");
+		model = loadOBJ("OBJFiles/untitled.obj");
 		for (size_t i = 0;
 			i < model.size(); i++)
 		{
-			vertices.emplace_back(model[i].position);
+			vertices.emplace_back(model[i].pos);
+			normals.emplace_back(model[i].normal);
 		}
 	}
 	VertexIndexBuf GetTriangle() const
@@ -31,6 +32,6 @@ public:
 				0,4,  1,5,  3,7,  2,6,
 				4,5,  5,7,  7,6,  6,4 }
 		};*/
-		return{ vertices };
+		return{ vertices, normals };
 	}
 };

@@ -3,38 +3,25 @@ D:\learning material\OpenGL\test\test\Line.h(41,37): warning C4244: 'argument': 
 D:\learning material\OpenGL\test\test\Line.h(41,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 D:\learning material\OpenGL\test\test\Line.h(60,37): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 D:\learning material\OpenGL\test\test\Line.h(60,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-D:\learning material\OpenGL\test\test\Cube.h(17,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\learning material\OpenGL\test\test\Cube.h(17,19): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
-D:\learning material\OpenGL\test\test\main.cpp(18,34): warning C4305: 'initializing': truncation from 'double' to 'const float'
-D:\learning material\OpenGL\test\test\main.cpp(48,36): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
-D:\learning material\OpenGL\test\test\main.cpp(61,18): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\xmemory(714,68): warning C4244: 'argument': conversion from '_Ty' to 'T', possible loss of data
+D:\learning material\OpenGL\test\test\Light.h(11,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\learning material\OpenGL\test\test\Camera.h(6,1): warning C4005: 'PI': macro redefinition
+D:\learning material\OpenGL\test\test\Mat4.h(3): message : see previous definition of 'PI'
+D:\learning material\OpenGL\test\test\Camera.h(119,41): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
-          [
-              _Ty=int
-          ]
-          and
           [
               T=float
           ]
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\vector(721): message : see reference to function template instantiation 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,int,const float&,const float&>(_Alloc &,_Objty *const ,int &&,const float &,const float &)' being compiled
+D:\learning material\OpenGL\test\test\Camera.h(120,22): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
-              _Alloc=std::allocator<Vec3f>,
-              _Ty=Vec3<float>,
-              _Objty=Vec3<float>
+              T=float
           ]
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\vector(726): message : see reference to function template instantiation 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,int,const float&,const float&>(_Alloc &,_Objty *const ,int &&,const float &,const float &)' being compiled
+D:\learning material\OpenGL\test\test\Camera.h(121,41): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
-              _Alloc=std::allocator<Vec3f>,
-              _Ty=Vec3<float>,
-              _Objty=Vec3<float>
+              T=float
           ]
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\vector(739): message : see reference to function template instantiation 'void std::vector<Vec3f,std::allocator<Vec3f>>::_Emplace_back_with_unused_capacity<_Ty,const float&,const float&>(_Ty &&,const float &,const float &)' being compiled
-          with
-          [
-              _Ty=int
-          ]
-D:\learning material\OpenGL\test\test\Cube.h(24): message : see reference to function template instantiation 'void std::vector<Vec3f,std::allocator<Vec3f>>::emplace_back<int,const float&,const float&>(int &&,const float &,const float &)' being compiled
+D:\learning material\OpenGL\test\test\main.cpp(23,34): warning C4305: 'initializing': truncation from 'double' to 'const float'
+D:\learning material\OpenGL\test\test\main.cpp(42,36): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
+D:\learning material\OpenGL\test\test\Light.h(13): warning C4172: returning address of local variable or temporary: normalized
   test.vcxproj -> D:\learning material\OpenGL\test\Debug\test.exe
