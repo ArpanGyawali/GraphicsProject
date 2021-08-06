@@ -9,7 +9,7 @@ Vec3f& Normalized(Vec3f& p)
 	Vec3f normalized;
 	float mag = p.x * p.x + p.y * p.y + p.z * p.z;
 	mag = pow(mag, 0.5);
-	normalized = p.operator/(mag);
+	normalized = p/mag;
 	return normalized;
 }
 

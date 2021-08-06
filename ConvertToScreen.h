@@ -19,9 +19,9 @@ public:
 	{}
 	Vec3f& Transform(Vec3f& normalized) const
 	{
-		//const float zInv = 1.0f / normalized.z;
-		normalized.x = normalized.x * xFactor;
-		normalized.y = normalized.y * yFactor;
+		const float zInv = 1.0f / normalized.z;
+		normalized.x = normalized.x * zInv * xFactor;
+		normalized.y = normalized.y * zInv * yFactor;
 		return normalized;
 	}
 	Vec3f GetScreenCoordinate(Vec3f& normalized) const

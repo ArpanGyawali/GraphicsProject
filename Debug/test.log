@@ -4,24 +4,7 @@ D:\learning material\OpenGL\test\test\Line.h(41,27): warning C4244: 'argument': 
 D:\learning material\OpenGL\test\test\Line.h(60,37): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 D:\learning material\OpenGL\test\test\Line.h(60,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 D:\learning material\OpenGL\test\test\Light.h(11,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\learning material\OpenGL\test\test\Camera.h(6,1): warning C4005: 'PI': macro redefinition
-D:\learning material\OpenGL\test\test\Mat4.h(3): message : see previous definition of 'PI'
-D:\learning material\OpenGL\test\test\Camera.h(119,41): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\learning material\OpenGL\test\test\Camera.h(120,22): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\learning material\OpenGL\test\test\Camera.h(121,41): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
 D:\learning material\OpenGL\test\test\main.cpp(23,34): warning C4305: 'initializing': truncation from 'double' to 'const float'
-D:\learning material\OpenGL\test\test\main.cpp(42,36): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
+D:\learning material\OpenGL\test\test\main.cpp(151,31): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 D:\learning material\OpenGL\test\test\Light.h(13): warning C4172: returning address of local variable or temporary: normalized
   test.vcxproj -> D:\learning material\OpenGL\test\Debug\test.exe

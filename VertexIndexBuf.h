@@ -9,12 +9,9 @@ struct VertexIndexBuf
 		:
 		vertices(std::move(verts)),
 		normals(std::move(norms))
-	{
-		backFace.resize(vertices.size() / 3);
-	}
+	{}
 	std::vector<Vec3f> vertices;
 	std::vector<Vec3f> normals;
-	std::vector<bool> backFace;
 };
 //#pragma once
 //

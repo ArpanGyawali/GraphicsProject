@@ -13,7 +13,7 @@
 #include "Light.h"
 #include "Projection.h"
 #include "Vertex.h"
-#include "Camera.h"
+//#include "Camera.h"
 //#include "TextureLoader.h"
 #include "Model.h"
 
@@ -22,15 +22,18 @@
 
 static constexpr float delta = PI;
 //float s = 30.0f;
-float offsetZ = 2.0f;
+float offsetZ = 4.0f;
 float pitchX = 0.0f;
 float yawY = 0.0f;
 float rollZ = 0.0f;
 float lightX = 0.0f;
 float lightY = 0.0f;
+float lightZ = 30.0f;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-Camera camera(Vec3f(0.0f, 0.0f, 1.0f));
+//Camera camera(Vec3f(0.0f, 0.0f, 1.0f));
+Model model;
+
 
 void myinit(void)
 {
@@ -39,13 +42,18 @@ void myinit(void)
     /*deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;*/
 
-    glClearColor(0.1, 0.1, 0.1, 0.0);
+    
     glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
     glViewport(0, 0, WIDTH, HEIGHT);
     //glMatrixMode(GL_PROJECTION);
     //gluOrtho2D(0, WIDTH, 0, HEIGHT);
     //gluOrtho2D(0, 1, 0, 1);
     gluOrtho2D(-WIDTH/2, WIDTH/2, -HEIGHT/2, HEIGHT/2);
+    float currentFrame = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
+    deltaTime = currentFrame - lastFrame;
+    lastFrame = currentFrame;
 }
 
 
@@ -136,20 +144,30 @@ void myinit(void)
 //        
 //    }
 //}
+void drawSphere() {
+    //glLoadIdentity();
+    //glPushMatrix();
+    glTranslatef(lightX, lightY, 0.5);
+    glColor3f(0.75, 0.38, 0.23);
+    glutSolidSphere(0.05, 20, 20);
+    
+}
 
 void drawModel()
 {
     ConvertToScreen screen;
-    Model model;
-    //Vec3f view = Vec3f(0.0f, 0.0f, 1.0f);
-    Vec3f reference = Vec3f(0.0f, 0.0f, 0.0f);
-    Vec3f Ka = Vec3f(1.0f, 1.0f, 1.0f);
+    Vec3f view = Vec3f(0.0f, 0.0f, 1.0f);
+    Vec3f reference = Vec3f(0.0f, 0.0f, -1.0f);
+    Vec3f Ka = Vec3f(0.75f, 0.38f, 0.23f);
     Vec3f Kd = Vec3f(0.8f, 0.8f, 0.8f);
     Vec3f Ks = Vec3f(0.8f, 0.8f, 0.8f);
-    Vec3f light = Vec3f(lightX, lightY, 5.0f);
-    float ns = 255.0f;
-    Vec3f Ia = Vec3f(0.2f, 0.2f, 0.2f);
-    Vec3f Il = Vec3f(0.7f, 0.7f, 0.7f);
+    Vec3f light = Vec3f(lightX, lightY, lightZ);
+    //Mat4f lightRot = Mat4f::RotationX(lightX) * Mat4f::RotationY(lightY);
+    //light = lightRot * light;
+    std::cout << light.x << " " << light.y << " " << light.z << std::endl;
+    float ns = 400.0f;
+    Vec3f Ia = Vec3f(0.3f, 0.1f, 0.1f);
+    Vec3f Il = Vec3f(0.9f, 0.9f, 0.9f);
     //auto lines = cube.GetLines();
     auto triangles = model.GetTriangle();
     //Mat4f scale = Mat4f::Scaling(10.0f);
@@ -158,41 +176,43 @@ void drawModel()
         Mat4f::RotationY(yawY) *
         Mat4f::RotationZ(rollZ);
     Mat4f translate = Mat4f::Translation(0.0f, 0.0f, offsetZ);
-    Mat4f view = camera.GetViewMatrix();
+    //Mat4f view = camera.GetViewMatrix();
     //Mat4f perspective = Mat4f::PerspectiveFOV(120, WIDTH/HEIGHT, 0.7, -0.5);
     Mat4f composite = translate * rotation;
-    /*for (auto& n : triangles.normals)
-        {
-            n = rotation * n;
-        }*/
+    for (auto& n : triangles.normals)
+    {
+        n = rotation * n;
+    }
     //Transform from model space to view space
     for (auto& v : triangles.vertices)
     {
         v = composite * v;          //modeling transformation(MC -> WC)
         //Viewing Transfrmaion(WC -> VC)
-        v = view * v;
+        //v = view * v;
         /*Mat4f perspective = PerspectiveFOV((camera.Zoom * (PI / 180)), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
         v = perspective * v;*/
-        PerspectiveView(camera.CameraPos.z, reference, v);  //projection transformation(VC -> PC)
+        PerspectiveView(view.z, reference, v);  //projection transformation(VC -> PC)
         auto norm = Normalized(v);              //PC -> NDC
         v = screen.Transform(norm);             //Workstation transformation(NDC -> DC)
+        v.z = 1.0f;
     }
     //backface test                                                                    
+    //for (size_t i = 0,
+    //    end = triangles.vertices.size();
+    //    i < end; i=i+3)
+    //{
+    //    const Vec3f& v0 = triangles.vertices[i];
+    //    const Vec3f& v1 = triangles.vertices[i + 1];                    
+    //    const Vec3f& v2 = triangles.vertices[i + 2];
+    //    Vec3f normal = (v2- v0).cross(v1 - v2);
+    //    /*std::cout << normal.x << " " << normal.y << " " << normal.z << std::endl;*/ 
+    //    triangles.backFace[i/3] = view.dot(normal) >= 0.0f;
+    //    std::cout << triangles.backFace[i/3] << std::endl;
+    //}
+
+
     for (size_t i = 0,
-        end = triangles.vertices.size() / 3;
-        i < end; i=i+3)
-    {
-        const Vec3f& v0 = triangles.vertices[i];
-        const Vec3f& v1 = triangles.vertices[i + 1];
-        const Vec3f& v2 = triangles.vertices[i + 2];
-        Vec3f normal = (v1 - v2).cross(v0 - v2);
-        //triangles.backFace[i] = view.dot(normal) >= 0.0f;
-    }
-    size_t count = triangles.vertices.size() / 3;
-    //draw triangle
-    std::cout << triangles.vertices[0].x << " " << triangles.vertices[0].y << " " << triangles.vertices[0].z << std::endl;
-    for (size_t i = 0,
-        end = triangles.vertices.size() / 3;
+        end = triangles.vertices.size();
         i < end; i=i+3)
     {
         Vec3f v01 = triangles.vertices[i];
@@ -201,96 +221,82 @@ void drawModel()
         Vec3f n1 = triangles.normals[i];
         Vec3f n2 = triangles.normals[i + 1];
         Vec3f n3 = triangles.normals[i + 2];
-        Vec3f vc1 = calculateIntensity(Ka, Kd, Ks, ns, v01, light, camera.CameraPos, n1, Ia, Il);
-        Vec3f vc2 = calculateIntensity(Ka, Kd, Ks, ns, v02, light, camera.CameraPos, n2, Ia, Il);
-        Vec3f vc3 = calculateIntensity(Ka, Kd, Ks, ns, v03, light, camera.CameraPos, n3, Ia, Il);
+        Vec3f vc1 = calculateIntensity(Ka, Kd, Ks, ns, v01, light, view, n1, Ia, Il);
+        Vec3f vc2 = calculateIntensity(Ka, Kd, Ks, ns, v02, light, view, n2, Ia, Il);
+        Vec3f vc3 = calculateIntensity(Ka, Kd, Ks, ns, v03, light, view, n3, Ia, Il);
         Vertex v1(v01, n1, vc1);
         Vertex v2(v02, n2, vc2);
         Vertex v3(v03, n3, vc3);
-        
+        Vec3f normal = (v03 - v02).cross(v01 - v02);
+        if (view.dot(normal) >= 0.0f)
+        {
             ProcessTriangle(v1, v2, v3);
-        
+        }
     }
 }
 
-//void keyboard(unsigned char key, int x, int y)
-//{
-//    const float dt = 1.0f / 60.0f;
-//    if (lightX > 200.0f)
-//        lightX = 0.0f;
-//    if (lightY > 200.0f)
-//        lightY = 0.0f;
-//    switch (key) {
-//    case 'q':
-//        pitchX += delta * dt;
-//        break;
-//    case 'w':
-//        yawY += delta * dt;
-//        break;
-//    case 'e':
-//        rollZ += delta * dt;
-//        break;
-//    case 'a':
-//        pitchX -= delta * dt;
-//        break;
-//    case 's':
-//        yawY -= delta * dt;
-//        break;
-//    case 'd':
-//        rollZ -= delta * dt;
-//        break;
-//    case 'r':
-//        offsetZ += 3.0f * dt;
-//        //s += 1.0f;
-//        break;
-//    case 'f':
-//        offsetZ -= 3.0f * dt;
-//        //s -= 1.0f;
-//        break;
-//    case 't':
-//        lightX += 5.0f;
-//        //s += 1.0f;
-//        break;
-//    case 'g':
-//        lightY += 5.0f;
-//        //s -= 1.0f;
-//        break;
-//    case 8:     //Backspace key
-//        pitchX = yawY = rollZ = 0.0f;
-//        lightX = lightY = 0.0f;
-//        offsetZ = 2.0f;
-//        break;
-//    case 27:    //ESC key
-//        exit(0);
-//        break;
-//    default:
-//        break;
-//    }
-//    glutPostRedisplay();  //Window redraw
-//}
-
 void keyboard(unsigned char key, int x, int y)
 {
+    const float dt = 1.0f / 60.0f;
+    if (lightX > 360.0f)
+        lightX = -360.0f;
+    if (lightX < -360.0f)
+        lightX = 360.0f;
+    if (lightY > 660.0f)
+        lightY = -260.0f;
+    if (lightY < -260.0f)
+        lightY = 660.0f;
     switch (key) {
-    case 'w':
-        camera.ProcessKeyboard(FORWARD, deltaTime);
+    case 'q':
+        pitchX += delta * dt;
         break;
-    case 's':
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
+    case 'w':
+        yawY += delta * dt;
+        break;
+    case 'e':
+        rollZ += delta * dt;
         break;
     case 'a':
-        camera.ProcessKeyboard(LEFT, deltaTime);
+        pitchX -= delta * dt;
+        break;
+    case 's':
+        yawY -= delta * dt;
         break;
     case 'd':
-        camera.ProcessKeyboard(RIGHT, deltaTime);
+        rollZ -= delta * dt;
+        break;
+    case 'r':
+        offsetZ += 3.0f * dt;
+        //s += 1.0f;
+        break;
+    case 'f':
+        offsetZ -= 3.0f * dt;
+        //s -= 1.0f;
         break;
     case 't':
-        lightX += 5.0f;
+        lightZ += 5.0f;
         //s += 1.0f;
         break;
     case 'g':
-        lightY += 5.0f;
+        lightZ -= 5.0f;
         //s -= 1.0f;
+        break;
+    case 'y':
+        lightX += 20.0f;
+        break;
+    case 'h':
+        lightX -= 20.0f;
+        break; 
+    case 'u':
+        lightY += 20.0f;
+        break;
+    case 'j':
+        lightY -= 20.0f;
+        break;
+    case 8:     //Backspace key
+        pitchX = yawY = rollZ = 0.0f;
+        lightX = lightY = 0.0f;
+        offsetZ = 2.0f;
         break;
     case 27:    //ESC key
         exit(0);
@@ -300,6 +306,38 @@ void keyboard(unsigned char key, int x, int y)
     }
     glutPostRedisplay();  //Window redraw
 }
+
+//void keyboard(unsigned char key, int x, int y)
+//{
+//    switch (key) {
+//    case 'w':
+//        camera.ProcessKeyboard(FORWARD, deltaTime);
+//        break;
+//    case 's':
+//        camera.ProcessKeyboard(BACKWARD, deltaTime);
+//        break;
+//    case 'a':
+//        camera.ProcessKeyboard(LEFT, deltaTime);
+//        break;
+//    case 'd':
+//        camera.ProcessKeyboard(RIGHT, deltaTime);
+//        break;
+//    case 't':
+//        lightX += 5.0f;
+//        //s += 1.0f;
+//        break;
+//    case 'g':
+//        lightY += 5.0f;
+//        //s -= 1.0f;
+//        break;
+//    case 27:    //ESC key
+//        exit(0);
+//        break;
+//    default:
+//        break;
+//    }
+//    glutPostRedisplay();  //Window redraw
+//}
 
 void drawLine()
 {
@@ -325,13 +363,14 @@ void drawLine()
 
 void display()
 {
+
+    glClearColor(1.0, 1.0, 1.0, 1.0);
     //  Clear screen and Z-buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Reset transformations
-    //glLoadIdentity();
 
     //drawCube();
+    //drawSphere();
     drawModel();
 
     glFlush();
@@ -345,9 +384,6 @@ int main(int argc, char* argv[]) {
 
     //  Initialize GLUT and process user parameters
     glutInit(&argc, argv);
-    float currentFrame = glutGet(GLUT_ELAPSED_TIME)/1000.0f;
-    deltaTime = currentFrame - lastFrame;
-    lastFrame = currentFrame;
     //  Request double buffered true color window with Z-buffer
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
@@ -362,7 +398,7 @@ int main(int argc, char* argv[]) {
 
 
     //  Enable Z-buffer depth test
-    glEnable(GL_DEPTH_TEST);
+    //glEnable(GL_DEPTH_TEST);
 
     // Callback functions
     glutDisplayFunc(display);

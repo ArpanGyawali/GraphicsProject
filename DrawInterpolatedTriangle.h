@@ -175,3 +175,10 @@ void DrawFlatTriangle(const Vertex& it0,
 		}
 	}
 }
+
+void wireFrame(const Vertex& v0, const Vertex& v1, const Vertex& v2)
+{
+	Bressenham(v0.pos.x, v0.pos.y, v1.pos.x, v1.pos.y, RED);
+	Bressenham(v1.pos.x, v1.pos.y, v2.pos.x, v2.pos.y, RED);
+	Bressenham(v2.pos.x, v2.pos.y, v0.pos.x, v0.pos.y, RED);
+}

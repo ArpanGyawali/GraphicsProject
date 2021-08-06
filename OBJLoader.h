@@ -124,8 +124,9 @@ static std::vector<Vertex> loadOBJ(const char* file_name)
 
 	//DEBUG
 	std::cout << "Nr of vertices: " << vertices.size() << "\n";
-	std::cout << "vertices: " << vertices[49469].pos.x << "\n";
-	std::cout << "Nr of vertices: " << vertices.size() << "\n";
+	
+	
+	
 
 	//Loaded success
 	std::cout << "OBJ file loaded!" << "\n";
